@@ -3,35 +3,28 @@ pipeline{
     agent any
 	
 	tools{
-	  maven 'Maven 3.6.1'
+	  nodejs 'NodeJS 8.9.0'
     }
 	
     stages{
         stage('build'){
             steps{
                 echo 'this is build step'
-				dir('worker'){
-                  sh 'mvn compile'
+				dir('result'){
+                  sh 'npm install'
+				  sh 'npm ls'
 				}
             } 
         }
         stage('test'){
             steps{
                 echo 'this is test stage'
-                dir('worker'){
-                  sh 'mvn clean test'
+                dir('result'){
+                  sh 'npm test'
 				}
             } 
         }
-        stage('package'){
-            steps{
-                echo 'this is package stage'
-                dir('worker'){
-                  sh 'mvn package -DskipTests'
-				  archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
-				}
-            } 
-        }
+        
     }
     
     post{
